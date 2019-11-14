@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { ActivityIndicator } from 'react-native';
 import api from '../../services/api';
 import {
   Container,
@@ -13,6 +14,8 @@ import {
   Info,
   Title,
   Author,
+  Load,
+  LoadText,
 } from './styles';
 
 export default class User extends Component {
@@ -27,6 +30,7 @@ export default class User extends Component {
   };
 
   state = {
+    load: true,
     stars: [],
   };
 
@@ -35,15 +39,25 @@ export default class User extends Component {
     const user = navigation.getParam('user');
 
     const response = await api.get(`/users/${user.login}/starred`);
-    this.setState({ stars: response.data });
+    this.setState({
+      stars: response.data,
+      load: false,
+    });
   }
 
   render() {
     const { navigation } = this.props;
-    const { stars } = this.state;
-
+    const { stars, load } = this.state;
     const user = navigation.getParam('user');
 
+    if (load) {
+      return (
+        <Load>
+          <ActivityIndicator size="large" color="#7159c1" />
+          <LoadText>Carregando...</LoadText>
+        </Load>
+      );
+    }
     return (
       <Container>
         <Header>
@@ -51,7 +65,6 @@ export default class User extends Component {
           <Name>{user.name}</Name>
           <Bio>{user.bio}</Bio>
         </Header>
-
         <Stars
           data={stars}
           keyExtractor={star => String(star.id)}

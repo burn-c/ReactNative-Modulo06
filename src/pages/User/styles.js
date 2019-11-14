@@ -5,6 +5,19 @@ export const Container = styled.View`
   padding: 30px;
 `;
 
+export const Load = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+export const LoadText = styled.Text`
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+`;
+
 export const Header = styled.View`
   align-items: center;
   padding-bottom: 20px;
