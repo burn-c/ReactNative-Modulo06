@@ -33,6 +33,7 @@ export default class User extends Component {
     load: true,
     page: 1,
     stars: [],
+    refreshing: false,
   };
 
   // Executa assim que a pagina abre
@@ -53,6 +54,7 @@ export default class User extends Component {
       stars: page >= 2 ? [...stars, ...response.data] : response.data,
       page,
       load: false,
+      refreshing: false,
     });
   };
 
@@ -63,6 +65,10 @@ export default class User extends Component {
     this.setState({
       load: true,
     });
+  };
+
+  refreshList = () => {
+    this.setState({ refreshing: true, stars: [] }, this.load);
   };
 
   render() {
@@ -85,6 +91,9 @@ export default class User extends Component {
           </Load>
         ) : (
           <Stars
+            onRefresh={this.refreshList} // Função dispara quando o usuário arrasta a lista pra baixo
+            refreshing={this.state.refreshing} // Variável que armazena um estado true/false que representa se a lista está atualizando
+            // Restante das props
             onEndReachedThreshold={0.2} // 20% do final da lista
             onEndReached={this.loadMore} // Executa a função quando chega no 20% final
             data={stars}
