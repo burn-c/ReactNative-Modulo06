@@ -90,7 +90,7 @@ export default class Main extends Component {
         <Form>
           <Input
             autoCorrect={false}
-            autoCapitalize="node"
+            autoCapitalize="none"
             placeholder="Adicionar usuário"
             value={newUser}
             onChangeText={text => this.setState({ newUser: text })}

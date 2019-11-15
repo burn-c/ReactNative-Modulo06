@@ -26,6 +26,7 @@ export default class User extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
       getParam: PropTypes.func,
+      navigate: PropTypes.func,
     }).isRequired,
   };
 
@@ -71,9 +72,15 @@ export default class User extends Component {
     this.setState({ refreshing: true, stars: [] }, this.load);
   };
 
+  handleNavigate = repository => {
+    const { navigation } = this.props;
+
+    navigation.navigate('Repo', { repository });
+  };
+
   render() {
     const { navigation } = this.props;
-    const { stars, load } = this.state;
+    const { stars, load, refreshing } = this.state;
     const user = navigation.getParam('user');
 
     return (
@@ -92,14 +99,13 @@ export default class User extends Component {
         ) : (
           <Stars
             onRefresh={this.refreshList} // Função dispara quando o usuário arrasta a lista pra baixo
-            refreshing={this.state.refreshing} // Variável que armazena um estado true/false que representa se a lista está atualizando
-            // Restante das props
+            refreshing={refreshing} // Variável que armazena um estado true/false que representa se a lista está atualizando
             onEndReachedThreshold={0.2} // 20% do final da lista
             onEndReached={this.loadMore} // Executa a função quando chega no 20% final
             data={stars}
             keyExtractor={star => String(star.id)}
             renderItem={({ item }) => (
-              <Starred>
+              <Starred onPress={() => this.handleNavigate(item)}>
                 <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
                 <Info>
                   <Title>{item.name}</Title>

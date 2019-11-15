@@ -78,7 +78,7 @@ export const ProfileButton = styled(RectButton)`
   background: #7159c1;
   justify-content: center;
   align-items: center;
-  height: 36px;
+  height: 30px;
 `;
 
 export const ProfileButtonText = styled.Text`
